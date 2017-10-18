@@ -15,7 +15,7 @@ import java.awt.Graphics2D;
  */
 public abstract class Entity {
     
-    public final EntityType type;
+    public final EntityType entityType;
     
     protected float x;
     protected float y;
@@ -24,7 +24,7 @@ public abstract class Entity {
     protected Color color;
     
     protected Entity(EntityType type, float x, float y, int r, Color color){
-        this.type = type;
+        this.entityType = type;
         this.x = x;
         this.y = y;
         this.r = r;
@@ -33,5 +33,17 @@ public abstract class Entity {
     
     public abstract void update();//Input input
     public abstract void render(Graphics2D g);
+    
+    public float GetX(){
+        return x;
+    }
+    
+    public float GetY(){
+        return y;
+    }
+    
+    public int GetR(){
+        return r;
+    }
     
 }

@@ -14,7 +14,7 @@ public class Game implements Runnable{
     public static final int         HEIGHT              = 600;
     public static final String      TITLE               = "BubbleShooter";
     public static final int         CLEAR_COLOR         = 0xff0000f0;
-    public static final int         NUM_BUFFERS         = 4;
+    public static final int         NUM_BUFFERS         = 1;
     //Game loop
     public static final float       UPDATE_RATE         = 60.0f;
     public static final float       UPDATE_INTERVAL     = Time.SECOND / UPDATE_RATE;
@@ -29,9 +29,9 @@ public class Game implements Runnable{
     public static final int         PLAYER_START_STROKE       = 3;
     public static final byte        PLAYER_START_SHOOTING_SCALE =1;
     //Bullet
-    public static final int         BULLET_RADIUS           = 2;
+    public static final int         BULLET_RADIUS           = 3;
     public static final Color         BULLET_COLOR           = Color.WHITE;
-    public static final float         BULLET_SPEED           = 5;
+    public static final float         BULLET_SPEED           = 7;
     public static final long          SHOOTING_RATE          = 100000000l;
     
     
@@ -42,6 +42,7 @@ public class Game implements Runnable{
     private Player                  player;
     
     public static ArrayList<Bullet> bullets;
+    public static ArrayList<Enemy> enemies;
     
     public Game(){
         running = false;
@@ -53,6 +54,14 @@ public class Game implements Runnable{
                 PLAYER_START_RADIUS,PLAYER_START_STROKE, PLAYER_START_COLOR
                 ,PLAYER_START_SPEED,PLAYER_START_SHOOTING_SCALE);
         bullets = new ArrayList<Bullet>();
+        //enemy = new Enemy((byte)5,(byte)3,Color.RED,(byte)1,(byte)1,(byte)5);
+        //enemy2 = new Enemy((byte)10,(byte)3,Color.GREEN,(byte)1,(byte)1,(byte)5);
+        enemies = new ArrayList<Enemy>();
+        
+        enemies.add(new Enemy((byte)5,(byte)3,Color.RED,(byte)1,(byte)1,(byte)5));
+        for (int i =0; i< 5; i++)
+            enemies.add(new Enemy((byte)(Math.random()*20+7),(byte)3,Color.GREEN,(byte)1,(byte)1,(byte)(Math.random()*2+1)));
+        
     }
     public synchronized void start(){
         if(running)
@@ -128,15 +137,22 @@ public class Game implements Runnable{
     }
     private void update(){
         player.update(input);
+        BulletEnemyCollision();
         //Bullets Update
         Iterator<Bullet> i = bullets.iterator();
         while(i.hasNext()){
             Bullet bullet = i.next();
             bullet.update();
-            if(bullet.removeFlag()){
+            if(bullet.GetRemoveFlag()){
                 i.remove();
             }
         }
+        for(Enemy enemy : enemies){
+            enemy.update();
+        }
+        System.out.println(bullets.size());
+        //enemy.update();
+        //enemy2.update();
     }
     private void render(){
         //Display.clear();
@@ -145,10 +161,32 @@ public class Game implements Runnable{
         for(Bullet bullet : bullets){
             bullet.render(graphics);
         }
+        for(Enemy enemy : enemies){
+            enemy.render(graphics);
+        }
+        //enemy.render(graphics);
+        //enemy2.render(graphics);
         Display.swapBuffers();
     }
     
     private void cleanUp(){//очистка ресурсов
         Display.destroy();
+    }
+    
+    private void BulletEnemyCollision(){
+        for(Enemy enemy : enemies){
+            float ex = enemy.GetX();
+            float ey = enemy.GetY();
+            int er = enemy.GetR();
+            for(Bullet bullet : bullets){
+                float dx = ex - bullet.GetX();
+                float dy = ey - bullet.GetY();
+                double dist = Math.sqrt(dx*dx+dy*dy);
+                if((int)dist< (er + bullet.GetR())){
+                    enemy.hit();
+                    bullet.SetRemoveFlag(true);
+                }
+            }
+        }
     }
 }

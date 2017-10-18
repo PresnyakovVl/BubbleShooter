@@ -16,31 +16,41 @@ import java.awt.Graphics2D;
 public class Bullet extends Entity{
     
     private float speed;
+    private boolean removeFlag;
     
     protected Bullet(float x, float y, int r, Color color, float speed){
         super(EntityType.Bullet,x,y,r,color);
         this.speed = speed;
+        this.removeFlag = false;
     }
     
     @Override
     public void update(){
-        if(!removeFlag()){
+        if(!removeFlag){ //не работает
             y-=speed;
         }
         
     }
     @Override
     public void render(Graphics2D g){
-        if(!removeFlag()){
+        if(!removeFlag){
             g.setColor(color);
             g.fillOval((int)x, (int)y, r, 2*r);
             //System.out.println("пиу пиу");
         }
     }
     
-    public boolean removeFlag(){
+    public void removeFlag(){
         if(y<0 || y>Game.HEIGHT || x<0 || x>Game.WIDTH)
-           return true;
-        return false;
+           removeFlag = true;
+        removeFlag = false;
+    }
+    
+    public boolean GetRemoveFlag(){
+        return removeFlag;
+    }
+    
+    public void SetRemoveFlag(Boolean val){
+        removeFlag = val;
     }
 }

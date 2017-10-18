@@ -22,6 +22,7 @@ public class Player extends Entity{
     private int Stroke;
     private long lastShoot;
     private byte shootingScale;
+    private static final double ANGLE_45 = Math.toRadians(45);
     
     protected Player(float x, float y,int r, int Stroke, Color color1, float speed, byte shootingScale){
         super(EntityType.Player,x , y, r,  color1);
@@ -56,8 +57,9 @@ public class Player extends Entity{
         }if(right){
             dx = speed;
         }if((up && left) || (up && right) || (down && left) || (down && right)){
-            dy = dy*(float)Math.sin(45);
-            dx = dx*(float)Math.sin(45);
+            
+            dy = dy*(float)Math.sin(ANGLE_45);
+            dx = dx*(float)Math.sin(ANGLE_45);
         }
         
         //shoot
@@ -105,4 +107,6 @@ public class Player extends Entity{
         }
         
     }
+    
+    
 }
