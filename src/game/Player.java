@@ -22,14 +22,16 @@ public class Player extends Entity{
     private int Stroke;
     private long lastShoot;
     private byte shootingScale;
+    private byte health;
     private static final double ANGLE_45 = Math.toRadians(45);
     
-    protected Player(float x, float y,int r, int Stroke, Color color1, float speed, byte shootingScale){
+    protected Player(float x, float y,int r, int Stroke, Color color1, float speed, byte shootingScale, byte health){
         super(EntityType.Player,x , y, r,  color1);
         this.speed = speed;
         this.Stroke = Stroke;
         this.lastShoot = Time.get();
         this.shootingScale = shootingScale;
+        this.health = health;
     }
     
     @Override
@@ -106,6 +108,14 @@ public class Player extends Entity{
             lastShoot=Time.get();
         }
         
+    }
+    
+    public void hit(){
+        health--;
+    }
+    
+    public byte GetHealth(){
+        return health;
     }
     
     

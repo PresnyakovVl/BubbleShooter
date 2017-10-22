@@ -26,24 +26,23 @@ public class Bullet extends Entity{
     
     @Override
     public void update(){
-        if(!removeFlag){ //не работает
+        removeFlag();
+        if(!removeFlag){ 
             y-=speed;
         }
         
     }
     @Override
     public void render(Graphics2D g){
-        if(!removeFlag){
             g.setColor(color);
             g.fillOval((int)x, (int)y, r, 2*r);
             //System.out.println("пиу пиу");
-        }
+        
     }
     
     public void removeFlag(){
         if(y<0 || y>Game.HEIGHT || x<0 || x>Game.WIDTH)
            removeFlag = true;
-        removeFlag = false;
     }
     
     public boolean GetRemoveFlag(){
