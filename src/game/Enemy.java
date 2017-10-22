@@ -37,7 +37,7 @@ public class Enemy extends Entity{
         //this.speed = speed;
         this.speed = (float)Math.random()*ENEMY_SPEED_SCALE+rank;
         
-        this.r = (int)(Math.random()*ENEMY_RADIUS_SCALE+rank);
+        this.r = (int)(Math.random()*ENEMY_RADIUS_SCALE+5);
         System.out.println(r);
         //this.Stroke = Stroke;
         this.rank = rank;

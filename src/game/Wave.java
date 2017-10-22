@@ -6,6 +6,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import utils.Time;
 
@@ -15,7 +16,7 @@ import utils.Time;
  */
 public class Wave {
     
-    private static final String WAVE_TEXT = " В О Л Н А -";
+    private static final String WAVE_TEXT = " В О Л Н А - ";
     private static final long WAVE_DELAY = 5000;
     private static final  byte WAVE_MULTIPLIER = 5;
     private static final double TIMER_DIVIDER = WAVE_DELAY / 180;
@@ -65,8 +66,10 @@ public class Wave {
         alpha = 255 * Math.sin(Math.toRadians(alpha));
         if(alpha< 0) alpha = 0;
         if(alpha>255) alpha = 255;
+        g.setFont(new Font("consolas", Font.PLAIN, 20));
         g.setColor(new Color(255,255,255,(int)alpha));
-        g.drawString(WAVE_TEXT+waveNum, Game.WIDTH/2, Game.HEIGHT/2);
+        int length = (int)g.getFontMetrics().getStringBounds(WAVE_TEXT+waveNum, g).getWidth();
+        g.drawString(WAVE_TEXT+waveNum, Game.WIDTH/2 - length/2, Game.HEIGHT/2);
     }
     
     public void createEnemies(){
